@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<title>Ink Log</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<!-- 背景インク -->
+<div id="bgInk"></div>
+
+<!-- ロゴ -->
+
+<header>
+
+<div class="logo">
+
+<div class="logoMain">
+Ink Log
+</div>
+
+<div class="logoSub">
+BATTLE RECORD
+</div>
+
+</div>
+
+</header>
+
+<!-- タブ -->
+
+<nav class="tabs">
+
+<button class="tab active"
+data-page="inputPage">
+
+入力
+
+</button>
+
+<button class="tab"
+data-page="battlePage">
+
+戦績
+
+</button>
+
+<button class="tab"
+data-page="analysisPage">
+
+分析
+
+</button>
+
+</nav>
+
+<!-- ========================= -->
+<!-- 入力 -->
+<!-- ========================= -->
+
+<section
+id="inputPage"
+class="page active">
+
+<div class="card">
+
+<h2>試合を記録する</h2>
+
+<select id="battleType"></select>
+
+<select id="rule"></select>
+
+<select id="stage"></select>
+
+<select id="weapon"></select>
+
+<select id="result">
+
+<option value="win">
+勝ち
+</option>
+
+<option value="lose">
+負け
+</option>
+
+<option value="disconnect">
+通信切断
+</option>
+
+<option value="invalid">
+無効試合
+</option>
+
+</select>
+
+<input
+id="kill"
+type="number"
+placeholder="キル">
+
+<input
+id="assist"
+type="number"
+placeholder="アシスト">
+
+<input
+id="death"
+type="number"
+placeholder="デス">
+
+<input
+id="special"
+type="number"
+placeholder="スペシャル">
+
+<input
+id="paint"
+type="number"
+placeholder="塗りポイント">
+
+<textarea
+id="memo"
+placeholder="メモ（任意）">
+
+</textarea>
+
+<div class="buttonRow">
+
+<button
+id="resetButton">
+
+リセット
+
+</button>
+
+<button
+id="saveButton">
+
+保存する！
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- 戦績 -->
+<!-- ========================= -->
+
+<section
+id="battlePage"
+class="page">
+
+<div class="card">
+
+<h2>
+
+試合履歴
+
+</h2>
+
+<div id="battleList">
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- 詳細 -->
+<!-- ========================= -->
+
+<section
+id="detailPage"
+class="page">
+
+<div class="card">
+
+<button
+id="backButton">
+
+← 戻る
+
+</button>
+
+<div id="battleDetail">
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- 分析 -->
+<!-- ========================= -->
+
+<section
+id="analysisPage"
+class="page">
+
+<div class="card">
+
+<h2>
+
+統計
+
+</h2>
+
+<div id="summary">
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>
+
+武器ランキング
+
+</h2>
+
+<div id="weaponRanking">
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>
+
+ステージランキング
+
+</h2>
+
+<div id="stageRanking">
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>
+
+ルール別
+
+</h2>
+
+<div id="ruleRanking">
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>
+
+バトル種類別
+
+</h2>
+
+<div id="battleTypeRanking">
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>
+
+勝率推移
+
+</h2>
+
+<canvas
+id="winChart">
+
+</canvas>
+
+</div>
+
+</section>
+
+<!-- 通知 -->
+
+<div
+id="toast">
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+
+</html>
