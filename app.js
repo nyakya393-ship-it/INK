@@ -1098,3 +1098,142 @@ function searchBattle(word){
     );
 
 }
+/* ============================
+   Phase2: 戦績UI強化（追加のみ）
+============================ */
+
+/* カード全体クリックで詳細（拡張版保持） */
+function enableCardFullClick(){
+    const observer = new MutationObserver(()=>{
+        document.querySelectorAll(".battleCard").forEach((card, index)=>{
+            card.onclick = (e)=>{
+                if(e.target.classList.contains("deleteBtn")) return;
+                openBattle(index);
+            };
+        });
+    });
+
+    observer.observe(document.getElementById("battleList"),{
+        childList:true,
+        subtree:true
+    });
+}
+
+enableCardFullClick();
+
+/* ============================
+   勝敗バッジ強化表示（視覚強化のみ）
+============================ */
+
+function getResultEmoji(result){
+    switch(result){
+        case "win": return "🟢";
+        case "lose": return "🔴";
+        case "disconnect": return "⚠️";
+        case "invalid": return "⛔";
+        default: return "";
+    }
+}
+/* ============================
+   Phase3: グラフ追加
+============================ */
+
+/* キル・デス・塗りグラフ */
+function drawKDAChart(){
+
+    const canvas = document.getElementById("kdaChart");
+    if(!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+
+    const w = canvas.width = canvas.offsetWidth;
+    const h = canvas.height = 220;
+
+    ctx.clearRect(0,0,w,h);
+
+    if(battles.length === 0){
+        ctx.fillText("データなし",20,40);
+        return;
+    }
+
+    const ks = battles.map(b=>b.kill);
+    const ds = battles.map(b=>b.death);
+    const ps = battles.map(b=>b.paint);
+
+    function drawLine(data,color){
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+
+        data.forEach((v,i)=>{
+            const x = i*(w-20)/(data.length-1)+10;
+            const y = h - (v/max(data))*180;
+
+            if(i===0) ctx.moveTo(x,y);
+            else ctx.lineTo(x,y);
+        });
+
+        ctx.stroke();
+    }
+
+    const max = arr => Math.max(...arr,1);
+
+    drawLine(ks,"#c6ff00");
+    drawLine(ds,"#ff4d4d");
+    drawLine(ps,"#3fb7ff");
+}
+/* ============================
+   Phase4: 詳細強化（追加情報）
+============================ */
+
+function openBattleEnhanced(index){
+
+    const b = battles[index];
+
+    openBattle(index);
+
+    const detail = document.getElementById("battleDetail");
+
+    detail.innerHTML += `
+
+    <hr>
+
+    <b>追加分析</b><br>
+
+    KAD比: ${(b.kill/(b.death||1)).toFixed(2)}<br>
+    1試合火力: ${(b.kill + b.assist)}<br>
+    生存率目安: ${b.death === 0 ? "100%" : "低下あり"}<br>
+
+    `;
+}
+/* ============================
+   Phase5: KPI強化（追加のみ）
+============================ */
+
+function extraStats(){
+
+    const totalKill = total("kill");
+    const totalDeath = total("death");
+    const totalPaint = total("paint");
+
+    return {
+        kd: totalDeath === 0 ? totalKill : totalKill/totalDeath,
+        paintEfficiency: totalPaint / (battles.length || 1),
+        winStreak: calcWinStreak()
+    };
+}
+
+function calcWinStreak(){
+    let streak = 0;
+    let max = 0;
+
+    battles.forEach(b=>{
+        if(b.result === "win"){
+            streak++;
+            max = Math.max(max,streak);
+        }else{
+            streak = 0;
+        }
+    });
+
+    return max;
+}
