@@ -1,116 +1,105 @@
-<!DOCTYPE html>
-<html lang="ja">
+let battles = JSON.parse(localStorage.getItem("battles")) || [];
 
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ink Log</title>
-<link rel="stylesheet" href="style.css">
-</head>
+const battleTypes=["レギュラー","バンカラ","X","イベント"];
+const rules=["エリア","ヤグラ","ホコ","アサリ"];
+const weapons=["スシ","52ガロン","わかば"];
+const stages=["海女美","マサバ","ユノハナ"];
 
-<body>
+window.onload=()=>{
 
-<div id="bgInk"></div>
+fill("battleType",battleTypes);
+fill("rule",rules);
+fill("weapon",weapons);
+fill("stage",stages);
 
-<header>
-<div class="logo">
-<div class="logoMain">Ink Log</div>
-<div class="logoSub">BATTLE RECORD</div>
-</div>
-</header>
+setupTabs();
 
-<nav class="tabs">
+saveButton.onclick=save;
+resetButton.onclick=reset;
 
-<button class="tab active" data-page="inputPage">入力</button>
-<button class="tab" data-page="battlePage">戦績</button>
-<button class="tab" data-page="analysisPage">分析</button>
-<button class="tab" data-page="graphPage">グラフ</button>
+render();
+analysis();
+graphs();
+};
 
-</nav>
+function fill(id,list){
+const el=document.getElementById(id);
+list.forEach(v=>{
+let o=document.createElement("option");
+o.textContent=v;
+o.value=v;
+el.appendChild(o);
+});
+}
 
-<!-- 入力 -->
-<section id="inputPage" class="page active">
+function setupTabs(){
+document.querySelectorAll(".tab").forEach(t=>{
+t.onclick=()=>{
+document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+t.classList.add("active");
+document.getElementById(t.dataset.page).classList.add("active");
+};
+});
+}
 
-<div class="card">
-<h2>試合を記録する</h2>
+function save(){
+const b={
+battleType:battleType.value,
+rule:rule.value,
+weapon:weapon.value,
+stage:stage.value,
+result:result.value,
+kill:+kill.value,
+assist:+assist.value,
+death:+death.value,
+special:+special.value,
+paint:+paint.value,
+memo:memo.value,
+date:new Date().toLocaleString()
+};
+battles.unshift(b);
+localStorage.setItem("battles",JSON.stringify(battles));
+render();analysis();graphs();
+}
 
-<select id="battleType"></select>
-<select id="rule"></select>
-<select id="stage"></select>
-<select id="weapon"></select>
+function render(){
+battleList.innerHTML="";
+battles.forEach(b=>{
+battleList.innerHTML+=`
+<div class="battleCard">
+<b>${b.weapon}</b><br>
+${b.stage}<br>
+${b.kill}/${b.assist}/${b.death}
+</div>`;
+});
+}
 
-<select id="result">
-<option value="win">勝ち</option>
-<option value="lose">負け</option>
-<option value="disconnect">通信切断</option>
-<option value="invalid">無効試合</option>
-</select>
+function analysis(){}
 
-<input id="kill" type="number" placeholder="キル">
-<input id="assist" type="number" placeholder="アシスト">
-<input id="death" type="number" placeholder="デス">
-<input id="special" type="number" placeholder="スペシャル">
-<input id="paint" type="number" placeholder="塗りポイント">
+function graphs(){
+draw("winChart","kill");
+draw("killChart","kill");
+draw("deathChart","death");
+}
 
-<textarea id="memo" placeholder="メモ（任意）"></textarea>
+function draw(id,key){
+const c=document.getElementById(id);
+if(!c) return;
+const ctx=c.getContext("2d");
+let w=c.width=c.offsetWidth;
+let h=c.height=200;
+ctx.clearRect(0,0,w,h);
 
-<div class="buttonRow">
-<button id="resetButton">リセット</button>
-<button id="saveButton">保存する！</button>
-</div>
+let arr=battles.map(b=>b[key]).reverse();
+if(arr.length<2) return;
 
-</div>
-
-</section>
-
-<!-- 戦績 -->
-<section id="battlePage" class="page">
-
-<div class="card">
-<h2>試合履歴</h2>
-<div id="battleList"></div>
-</div>
-
-</section>
-
-<!-- 分析 -->
-<section id="analysisPage" class="page">
-
-<div class="card">
-<h2>統計</h2>
-<div id="summary"></div>
-</div>
-
-<div class="card"><h2>武器ランキング</h2><div id="weaponRanking"></div></div>
-<div class="card"><h2>ステージランキング</h2><div id="stageRanking"></div></div>
-<div class="card"><h2>ルール別</h2><div id="ruleRanking"></div></div>
-<div class="card"><h2>バトル種類別</h2><div id="battleTypeRanking"></div></div>
-
-</section>
-
-<!-- グラフ -->
-<section id="graphPage" class="page">
-
-<div class="card">
-<h2>勝率推移</h2>
-<canvas id="winChart"></canvas>
-</div>
-
-<div class="card">
-<h2>キル推移</h2>
-<canvas id="killChart"></canvas>
-</div>
-
-<div class="card">
-<h2>デス推移</h2>
-<canvas id="deathChart"></canvas>
-</div>
-
-</section>
-
-<div id="toast"></div>
-
-<script src="app.js"></script>
-
-</body>
-</html>
+ctx.beginPath();
+ctx.strokeStyle="#c6ff00";
+arr.forEach((v,i)=>{
+let x=i*(w/arr.length);
+let y=h-v*5;
+i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+});
+ctx.stroke();
+}
