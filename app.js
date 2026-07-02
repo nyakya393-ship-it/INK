@@ -1237,3 +1237,32 @@ function calcWinStreak(){
 
     return max;
 }
+<!-- =========================
+     Phase3: グラフ拡張UI
+========================= -->
+
+<div class="card">
+
+<h2>キル・デス・塗りグラフ</h2>
+
+<canvas id="kdaChart"></canvas>
+
+</div>
+
+<!-- =========================
+     Phase4: 詳細拡張UI（JS連携用）
+========================= -->
+
+<div id="extraAnalyticsHook"></div>
+
+<!-- =========================
+     Phase5: 追加KPI表示エリア
+========================= -->
+
+<div class="card">
+
+<h2>追加分析（拡張）</h2>
+
+<div id="extraStats"></div>
+
+</div>
