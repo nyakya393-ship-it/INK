@@ -10,8 +10,10 @@
 
 <body>
 
+<!-- 背景 -->
 <div id="bgInk"></div>
 
+<!-- ロゴ -->
 <header>
 <div class="logo">
 <div class="logoMain">Ink Log</div>
@@ -19,6 +21,7 @@
 </div>
 </header>
 
+<!-- タブ -->
 <nav class="tabs">
 
 <button class="tab active" data-page="inputPage">入力</button>
@@ -28,10 +31,13 @@
 
 </nav>
 
-<!-- 入力 -->
+<!-- =========================
+入力
+========================= -->
 <section id="inputPage" class="page active">
 
 <div class="card">
+
 <h2>試合を記録する</h2>
 
 <select id="battleType"></select>
@@ -63,7 +69,9 @@
 
 </section>
 
-<!-- 戦績 -->
+<!-- =========================
+戦績
+========================= -->
 <section id="battlePage" class="page">
 
 <div class="card">
@@ -73,7 +81,21 @@
 
 </section>
 
-<!-- 分析 -->
+<!-- =========================
+詳細
+========================= -->
+<section id="detailPage" class="page">
+
+<div class="card">
+<button id="backButton">← 戻る</button>
+<div id="battleDetail"></div>
+</div>
+
+</section>
+
+<!-- =========================
+分析
+========================= -->
 <section id="analysisPage" class="page">
 
 <div class="card">
@@ -81,14 +103,31 @@
 <div id="summary"></div>
 </div>
 
-<div class="card"><h2>武器ランキング</h2><div id="weaponRanking"></div></div>
-<div class="card"><h2>ステージランキング</h2><div id="stageRanking"></div></div>
-<div class="card"><h2>ルール別</h2><div id="ruleRanking"></div></div>
-<div class="card"><h2>バトル種類別</h2><div id="battleTypeRanking"></div></div>
+<div class="card">
+<h2>武器ランキング</h2>
+<div id="weaponRanking"></div>
+</div>
+
+<div class="card">
+<h2>ステージランキング</h2>
+<div id="stageRanking"></div>
+</div>
+
+<div class="card">
+<h2>ルール別</h2>
+<div id="ruleRanking"></div>
+</div>
+
+<div class="card">
+<h2>バトル種類別</h2>
+<div id="battleTypeRanking"></div>
+</div>
 
 </section>
 
-<!-- グラフ -->
+<!-- =========================
+グラフ（追加）
+========================= -->
 <section id="graphPage" class="page">
 
 <div class="card">
@@ -108,6 +147,7 @@
 
 </section>
 
+<!-- トースト -->
 <div id="toast"></div>
 
 <script src="app.js"></script>
