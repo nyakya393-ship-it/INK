@@ -24,6 +24,7 @@
 <button class="tab active" data-page="inputPage">入力</button>
 <button class="tab" data-page="battlePage">戦績</button>
 <button class="tab" data-page="analysisPage">分析</button>
+<button class="tab" data-page="graphPage">グラフ</button>
 
 </nav>
 
@@ -72,8 +73,6 @@
 
 </section>
 
-<!-- ❌ detailPage削除（モーダル化） -->
-
 <!-- 分析 -->
 <section id="analysisPage" class="page">
 
@@ -87,20 +86,27 @@
 <div class="card"><h2>ルール別</h2><div id="ruleRanking"></div></div>
 <div class="card"><h2>バトル種類別</h2><div id="battleTypeRanking"></div></div>
 
+</section>
+
+<!-- グラフ -->
+<section id="graphPage" class="page">
+
 <div class="card">
 <h2>勝率推移</h2>
 <canvas id="winChart"></canvas>
 </div>
 
-</section>
-
-<!-- ✅ モーダル追加 -->
-<div id="battleModal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">×</span>
-    <div id="modalBody"></div>
-  </div>
+<div class="card">
+<h2>キル推移</h2>
+<canvas id="killChart"></canvas>
 </div>
+
+<div class="card">
+<h2>デス推移</h2>
+<canvas id="deathChart"></canvas>
+</div>
+
+</section>
 
 <div id="toast"></div>
 
